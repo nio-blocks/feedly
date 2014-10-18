@@ -81,9 +81,10 @@ class FeedlyStreams(RESTPolling):
             return True
 
     def _prepare_url(self, paging):
-        if self._needs_auth:
+        if self._needs_auth():
             headers = {"Content-Type": "application/json",
-                        "Authorization": "OAuth + {}".format(self.auth_token)}
+                        "Authorization": "OAuth {}".format(self.auth_token)}
+            self._logger.debug(headers)
         else:
             headers = {"Content-Type": "application/json"}
         if paging:
