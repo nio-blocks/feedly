@@ -52,6 +52,7 @@ class FeedlyStreams(RESTPolling):
         super().__init__()
         self._user_id = None # Feedly user id is used in some requests.
         self._newer_than_timestamp = [None]
+        self._next_newer_than_timestamp = [None]
         self._continuation = None
 
     def configure(self, context):
@@ -67,11 +68,13 @@ class FeedlyStreams(RESTPolling):
         lookback_seconds = self.lookback.total_seconds()
         now_minus_lookback = calendar.timegm(time.gmtime()) - lookback_seconds
         self._newer_than_timestamp = [int(now_minus_lookback * 1000)]
+        self._next_newer_than_timestamp = [int(now_minus_lookback * 1000)]
         self._logger.debug(
             'Initializing newerThan timestamp to {}'
             .format(int(now_minus_lookback * 1000))
         )
         self._newer_than_timestamp *= self._n_queries
+        self._next_newer_than_timestamp *= self._n_queries
 
     def _needs_auth(self):
         # Authorization is only needed for category and feeds streams.
@@ -153,7 +156,7 @@ class FeedlyStreams(RESTPolling):
     def next_newer_than_timestamp(self):
         return self._next_newer_than_timestamp[self._idx]
 
-    @newer_than_timestamp.setter
+    @next_newer_than_timestamp.setter
     def next_newer_than_timestamp(self, timestamp):
         self._next_newer_than_timestamp[self._idx] = timestamp
 
