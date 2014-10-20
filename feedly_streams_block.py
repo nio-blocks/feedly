@@ -83,23 +83,16 @@ class FeedlyStreams(RESTPolling):
     def _prepare_url(self, paging):
         if self._needs_auth():
             headers = {"Content-Type": "application/json",
-                        "Authorization": "OAuth {}".format(self.auth_token)}
-            self._logger.debug(headers)
+                       "Authorization": "OAuth {}".format(self.auth_token)}
         else:
             headers = {"Content-Type": "application/json"}
-        if paging:
-            self.url = self.URL_FORMAT.format(self.stream_id,
-                                              self.newer_than_timestamp,
-                                              self._continuation)
-        else:
-            self.url = self.URL_FORMAT.format(self.stream_id,
-                                              self.newer_than_timestamp,
-                                              self._continuation)
+        self.url = self.URL_FORMAT.format(self.stream_id,
+                                          self.newer_than_timestamp,
+                                          self._continuation)
         return headers
 
     def _process_response(self, resp):
         signals = []
-        paging = False
         resp = resp.json()
         self._update_newer_than_timestamp(resp)
         entries = resp.get('items', [])
@@ -115,36 +108,34 @@ class FeedlyStreams(RESTPolling):
         if updated and updated >= self.newer_than_timestamp:
             self.next_newer_than_timestamp = updated + 1
             self._logger.debug(
-                'Updating newerThan timestamp to {} for {}'
-                .format(self.newer_than_timestamp, self.current_query)
+                'Updating next newerThan timestamp to {} for {}'
+                .format(self.next_newer_than_timestamp, self.current_query)
             )
 
     def _check_if_paging(self, resp):
         continuation = resp.get('continuation')
         if continuation:
             self._continuation = continuation
-            return False
             return True
         else:
+            # when paging is done, update newer than timestamp.
+            self.newer_than_timestamp = self.next_newer_than_timestamp
             self._continuation = None
             return False
 
     @property
     def stream_id(self):
-        stream_type = self.queries[self._idx].stream_type
-        if stream_type == FeedlyStreamType.FEED:
-            return quote('feed/{}'.format(self.queries[self._idx].stream_name),
+        if self.stream_type == FeedlyStreamType.FEED:
+            return quote('feed/{}'.format(self.stream_name),
                          safe='')
-        if stream_type == FeedlyStreamType.TAG:
-            #TODO: tag
-            return quote('feed/{}'.format(self.queries[self._idx].stream_name),
+        if self.stream_type == FeedlyStreamType.TAG:
+            return quote('user/{}/tag/{}'.format(self._user_id,
+                                                 self.stream_name),
                          safe='')
         else: # FeedlyStreamType.CATEGORY
-            return quote('user/{}/category/{}'.format(
-                self._user_id,
-                self.queries[self._idx].stream_name
-            ), safe='',
-            )
+            return quote('user/{}/category/{}'.format(self._user_id,
+                                                      self.stream_name),
+                         safe='')
 
     @property
     def stream_type(self):
@@ -157,6 +148,14 @@ class FeedlyStreams(RESTPolling):
     @property
     def current_query(self):
         return quote(self.stream_name)
+
+    @property
+    def next_newer_than_timestamp(self):
+        return self._next_newer_than_timestamp[self._idx]
+
+    @newer_than_timestamp.setter
+    def next_newer_than_timestamp(self, timestamp):
+        self._next_newer_than_timestamp[self._idx] = timestamp
 
     @property
     def newer_than_timestamp(self):
