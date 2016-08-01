@@ -1,12 +1,12 @@
 from .http_blocks.rest.rest_block import RESTPolling
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.common.signal.base import Signal
-from nio.metadata.properties.bool import BoolProperty
-from nio.metadata.properties.string import StringProperty
-from nio.metadata.properties.select import SelectProperty
-from nio.metadata.properties.timedelta import TimeDeltaProperty
-from nio.metadata.properties.list import ListProperty
-from nio.metadata.properties.holder import PropertyHolder
+from nio.util.discovery import discoverable
+from nio.signal.base import Signal
+from nio.properties.bool import BoolProperty
+from nio.properties.string import StringProperty
+from nio.properties.select import SelectProperty
+from nio.properties.timedelta import TimeDeltaProperty
+from nio.properties.list import ListProperty
+from nio.properties.holder import PropertyHolder
 from datetime import datetime
 from urllib.request import quote
 import time
@@ -29,7 +29,7 @@ class FeedlyStream(PropertyHolder):
     )
 
 
-@Discoverable(DiscoverableType.block)
+@discoverable
 class FeedlyStreams(RESTPolling):
     """ A block that gets entries from a feedly stream.
 
@@ -69,7 +69,7 @@ class FeedlyStreams(RESTPolling):
         now_minus_lookback = calendar.timegm(time.gmtime()) - lookback_seconds
         self._newer_than_timestamp = [int(now_minus_lookback * 1000)]
         self._next_newer_than_timestamp = [int(now_minus_lookback * 1000)]
-        self._logger.debug(
+        self.logger.debug(
             'Initializing newerThan timestamp to {}'
             .format(int(now_minus_lookback * 1000))
         )
@@ -99,7 +99,7 @@ class FeedlyStreams(RESTPolling):
         resp = resp.json()
         self._update_newer_than_timestamp(resp)
         entries = resp.get('items', [])
-        self._logger.debug(
+        self.logger.debug(
             'Feedly response contains {} items'.format(len(entries))
         )
         signals = [Signal(e) for e in entries]
@@ -110,7 +110,7 @@ class FeedlyStreams(RESTPolling):
         updated = resp.get('updated')
         if updated and updated >= self.newer_than_timestamp:
             self.next_newer_than_timestamp = updated + 1
-            self._logger.debug(
+            self.logger.debug(
                 'Updating next newerThan timestamp to {} for {}'
                 .format(self.next_newer_than_timestamp, self.current_query)
             )
