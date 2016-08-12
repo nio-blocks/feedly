@@ -46,7 +46,7 @@ class FeedlyStreams(RESTPolling):
     auth_token = StringProperty(title='Authorization Token',
                                 default='[[FEEDLY_AUTHORIZATION_TOKEN]]')
     user_id = StringProperty(title='User ID',
-                                default='[[FEEDLY_USER_ID]]')
+                             default='[[FEEDLY_USER_ID]]')
     queries = ListProperty(FeedlyStream, title='Streams')
     lookback = TimeDeltaProperty(title='Lookback Period')
 
