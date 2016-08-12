@@ -45,6 +45,8 @@ class FeedlyStreams(RESTPolling):
 
     auth_token = StringProperty(title='Authorization Token',
                                 default='[[FEEDLY_AUTHORIZATION_TOKEN]]')
+    user_id = StringProperty(title='User ID',
+                                default='[[FEEDLY_USER_ID]]')
     queries = ListProperty(FeedlyStream, title='Streams')
     lookback = TimeDeltaProperty(title='Lookback Period')
 
@@ -59,10 +61,6 @@ class FeedlyStreams(RESTPolling):
         super().configure(context)
         self._set_user_id()
         self._init_newer_than_timestamp()
-
-    def _set_user_id(self):
-        #TODO: remove hardcoded user_id
-        self._user_id = 'c55be7fe-bac5-436c-8892-ad320760fe45'
 
     def _init_newer_than_timestamp(self):
         lookback_seconds = self.lookback.total_seconds()
