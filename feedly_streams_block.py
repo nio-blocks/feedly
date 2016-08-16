@@ -52,7 +52,6 @@ class FeedlyStreams(RESTPolling):
 
     def __init__(self):
         super().__init__()
-        self.user_id = None # Feedly user id is used in some requests.
         self._newer_than_timestamp = [None]
         self._next_newer_than_timestamp = [None]
         self._continuation = None
