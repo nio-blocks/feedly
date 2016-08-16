@@ -52,14 +52,13 @@ class FeedlyStreams(RESTPolling):
 
     def __init__(self):
         super().__init__()
-        self._user_id = None # Feedly user id is used in some requests.
+        self.user_id = None # Feedly user id is used in some requests.
         self._newer_than_timestamp = [None]
         self._next_newer_than_timestamp = [None]
         self._continuation = None
 
     def configure(self, context):
         super().configure(context)
-        self._set_user_id()
         self._init_newer_than_timestamp()
 
     def _init_newer_than_timestamp(self):
@@ -130,11 +129,11 @@ class FeedlyStreams(RESTPolling):
             return quote('feed/{}'.format(self.stream_name),
                          safe='')
         if self.stream_type == FeedlyStreamType.TAG:
-            return quote('user/{}/tag/{}'.format(self._user_id,
+            return quote('user/{}/tag/{}'.format(self.user_id,
                                                  self.stream_name),
                          safe='')
         else: # FeedlyStreamType.CATEGORY
-            return quote('user/{}/category/{}'.format(self._user_id,
+            return quote('user/{}/category/{}'.format(self.user_id,
                                                       self.stream_name),
                          safe='')
 
