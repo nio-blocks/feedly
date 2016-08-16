@@ -45,24 +45,20 @@ class FeedlyStreams(RESTPolling):
 
     auth_token = StringProperty(title='Authorization Token',
                                 default='[[FEEDLY_AUTHORIZATION_TOKEN]]')
+    user_id = StringProperty(title='User ID',
+                             default='[[FEEDLY_USER_ID]]')
     queries = ListProperty(FeedlyStream, title='Streams')
     lookback = TimeDeltaProperty(title='Lookback Period')
 
     def __init__(self):
         super().__init__()
-        self._user_id = None # Feedly user id is used in some requests.
         self._newer_than_timestamp = [None]
         self._next_newer_than_timestamp = [None]
         self._continuation = None
 
     def configure(self, context):
         super().configure(context)
-        self._set_user_id()
         self._init_newer_than_timestamp()
-
-    def _set_user_id(self):
-        #TODO: remove hardcoded user_id
-        self._user_id = 'c55be7fe-bac5-436c-8892-ad320760fe45'
 
     def _init_newer_than_timestamp(self):
         lookback_seconds = self.lookback.total_seconds()
@@ -132,11 +128,11 @@ class FeedlyStreams(RESTPolling):
             return quote('feed/{}'.format(self.stream_name),
                          safe='')
         if self.stream_type == FeedlyStreamType.TAG:
-            return quote('user/{}/tag/{}'.format(self._user_id,
+            return quote('user/{}/tag/{}'.format(self.user_id,
                                                  self.stream_name),
                          safe='')
         else: # FeedlyStreamType.CATEGORY
-            return quote('user/{}/category/{}'.format(self._user_id,
+            return quote('user/{}/category/{}'.format(self.user_id,
                                                       self.stream_name),
                          safe='')
 
