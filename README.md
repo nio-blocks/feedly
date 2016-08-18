@@ -2,11 +2,11 @@
 Gets posts from the specified list of feedly `streams`. 
 
 ## Properties
-* **Authorization Token**: developer token from feedly account
-* **Streams**: feedly streams to query
-* **Lookback Period**: how far to lookback 
-* **Retry Interval**: how long to wait before attempting to try again when a url request fails
-* **Retry Limit**: number of times to attempt a retry before giving up when a url request fails
+* **authorization_token**: developer token from feedly account
+* **streams**: feedly streams to query
+* **lookback**: how far to lookback for posts 
+* **retry_interval**: how long to wait before attempting to try again when a url request fails
+* **retry_limit**: number of times to attempt a retry before giving up when a url request fails
 
 ## Dependencies
 * [RESTPolling Block](https://github.com/nio-blocks/http_blocks/blob/master/rest/rest_block.py)
@@ -22,58 +22,50 @@ The returned posts from each specified feedly `stream`. For example:
 
 ```
 {
-  "continuation": ":continuation_key",
-  "id": ":category_id",
-  "items": [
+  continuation: string,
+  id: string,
+  items: [
     {
-      "actionTimestamp": ":action_timestamp",
-      "alternate": [
+      actionTimestamp: datetime,
+      alternate: [
         {
-          "href": ":alternate_uri",
-          "type": ":mimetype"
+          href: string
         }
       ],
-      "author": ":author",
-      "canonical": [
+      author: string,
+      canonical: [
         {
-          "href": ":canonical_uri",
-          "type": ":mimetype"
+          href: string
         }
       ],
-      "categories": [
+      categories: [
         {
-          "id": ":item_category_id",
-          "label": ":item_category_name"
+          id: string,
+          label: string
         }
       ],
-      "crawled": ":crawled_timestamp",
-      "fingerprint": ":fingerprint",
-      "id": ":item_id",
-      "keywords": [
-        ":keyword"
-      ],
-      "origin": {
-        "htmlUrl": ":site_uri",
-        "streamId": ":feed_id",
-        "title": ":feed_title"
+      crawled: datetime,
+      id: string,
+      origin: {
+        htmlUrl: string,
+        streamId: string,
+        title: string
       },
-      "originId": ":item_uri",
-      "published": "item_pub_timestamp",
-      "summary": {
-        "content": ":item_desc",
-        "direction": ":text_direction"
+      originId: string,
+      published: datetime,
+      summary: {
+        content: string,
+        direction: string
       },
-      "title": ":item_title",
-      "tags": [
+      title: string,
+      tags: [
         {
-          "id": ":tag_id",
-          "label": ":tag_name"
-        },
-        ...
+          id: string,
+          label: string
+        }
       ],
-      "unread": true
+      unread: boolean
     }
-  ],
-  ...
+  ]
 }
 ```
