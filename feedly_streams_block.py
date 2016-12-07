@@ -21,7 +21,7 @@ class FeedlyStreamType(Enum):
 
 
 class FeedlyStream(PropertyHolder):
-    stream_name = StringProperty(title='Stream')
+    stream_name = StringProperty(title='Stream', default='')
     stream_type = SelectProperty(
         FeedlyStreamType,
         default=FeedlyStreamType.FEED,
@@ -48,7 +48,7 @@ class FeedlyStreams(RESTPolling):
     user_id = StringProperty(title='User ID',
                              default='[[FEEDLY_USER_ID]]')
     queries = ListProperty(FeedlyStream, title='Streams')
-    lookback = TimeDeltaProperty(title='Lookback Period')
+    lookback = TimeDeltaProperty(title='Lookback Period', default={'seconds':300})
 
     def __init__(self):
         super().__init__()
@@ -61,7 +61,7 @@ class FeedlyStreams(RESTPolling):
         self._init_newer_than_timestamp()
 
     def _init_newer_than_timestamp(self):
-        lookback_seconds = self.lookback.total_seconds()
+        lookback_seconds = self.lookback().total_seconds()
         now_minus_lookback = calendar.timegm(time.gmtime()) - lookback_seconds
         self._newer_than_timestamp = [int(now_minus_lookback * 1000)]
         self._next_newer_than_timestamp = [int(now_minus_lookback * 1000)]
@@ -74,7 +74,7 @@ class FeedlyStreams(RESTPolling):
 
     def _needs_auth(self):
         # Authorization is only needed for category and feeds streams.
-        if self.stream_type == FeedlyStreamType.FEED:
+        if self.stream_type() == FeedlyStreamType.FEED:
             return False
         else:
             return True
@@ -82,7 +82,7 @@ class FeedlyStreams(RESTPolling):
     def _prepare_url(self, paging):
         if self._needs_auth():
             headers = {"Content-Type": "application/json",
-                       "Authorization": "OAuth {}".format(self.auth_token)}
+                       "Authorization": "OAuth {}".format(self.auth_token())}
         else:
             headers = {"Content-Type": "application/json"}
         self.url = self.URL_FORMAT.format(self.stream_id,
@@ -124,16 +124,16 @@ class FeedlyStreams(RESTPolling):
 
     @property
     def stream_id(self):
-        if self.stream_type == FeedlyStreamType.FEED:
-            return quote('feed/{}'.format(self.stream_name),
+        if self.stream_type() == FeedlyStreamType.FEED:
+            return quote('feed/{}'.format(self.stream_name()),
                          safe='')
-        if self.stream_type == FeedlyStreamType.TAG:
-            return quote('user/{}/tag/{}'.format(self.user_id,
-                                                 self.stream_name),
+        if self.stream_type() == FeedlyStreamType.TAG:
+            return quote('user/{}/tag/{}'.format(self.user_id(),
+                                                 self.stream_name()),
                          safe='')
         else: # FeedlyStreamType.CATEGORY
-            return quote('user/{}/category/{}'.format(self.user_id,
-                                                      self.stream_name),
+            return quote('user/{}/category/{}'.format(self.user_id(),
+                                                      self.stream_name()),
                          safe='')
 
     @property
