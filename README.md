@@ -1,23 +1,29 @@
-# Feedly
+Feedly
+===================
 Gets posts from the specified list of feedly `streams`. 
 
-## Properties
-* **authorization_token**: developer token from feedly account
-* **streams**: feedly streams to query
-* **lookback**: how far to lookback for posts 
-* **retry_interval**: how long to wait before attempting to try again when a url request fails
-* **retry_limit**: number of times to attempt a retry before giving up when a url request fails
+Properties
+------------------
+**authorization_token**: developer token from feedly account
+**streams**: feedly streams to query
+**lookback**: how far to lookback for posts 
+**retry_interval**: how long to wait before attempting to try again when a url request fails
+**retry_limit**: number of times to attempt a retry before giving up when a url request fails
 
-## Dependencies
+Dependencies
+------------------
 * [RESTPolling Block](https://github.com/nio-blocks/http_blocks/blob/master/rest/rest_block.py)
 
-## Commands
+Commands
+------------------
 None
 
-## Input 
+Input 
+------------------
 None
 
-## Output
+Output
+------------------
 The returned posts from each specified feedly `stream`. For example:
 
 ```

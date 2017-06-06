@@ -1,0 +1,7 @@
+{
+  "nio/Feedly": {
+    "Reference": "github.com/nio-blocks/feedly.git@v1.0.0",
+    "Language": "Python",
+    "Version": "1.0.0"
+  }
+}
