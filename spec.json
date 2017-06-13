@@ -1,30 +1,31 @@
 {
-  "nio/Feedly": {
-    "Commands": {},
-    "Description": "Gets posts from the specified list of feedly `streams`.",
-    "Category": "WebService",
-    "Dependencies": [
-      "* [RESTPolling Block](https://github.com/nio-blocks/http_blocks/blob/master/rest/rest_block.py)"
-    ],
-    "Version": "1.0.0",
-    "Properties": {
-      "streams": {
-        "description": "feedly streams to query"
-      },
-      "retry_limit": {
-        "description": "number of times to attempt a retry before giving up when a url request fails"
-      },
-      "retry_interval": {
-        "description": "how long to wait before attempting to try again when a url request fails"
-      },
-      "lookback": {
-        "description": "how far to lookback for posts"
-      },
-      "authorization_token": {
-        "description": "developer token from feedly account"
-      }
-    },
-    "Output": "The returned posts from each specified feedly `stream`. For example:\n```\n{\ncontinuation: string,\nid: string,\nitems: [\n{\nactionTimestamp: datetime,\nalternate: [\n{\nhref: string\n}\n],\nauthor: string,\ncanonical: [\n{\nhref: string\n}\n],\ncategories: [\n{\nid: string,\nlabel: string\n}\n],\ncrawled: datetime,\nid: string,\norigin: {\nhtmlUrl: string,\nstreamId: string,\ntitle: string\n},\noriginId: string,\npublished: datetime,\nsummary: {\ncontent: string,\ndirection: string\n},\ntitle: string,\ntags: [\n{\nid: string,\nlabel: string\n}\n],\nunread: boolean\n}\n]\n}\n```",
-    "Input": "None"
-  }
+    "nio/Feedly": {
+        "Output": {
+            "Description": "The returned posts from each specified feedly `stream`. For example:\n```\n{\ncontinuation: string,\nid: string,\nitems: [\n{\nactionTimestamp: datetime,\nalternate: [\n{\nhref: string\n}\n],\nauthor: string,\ncanonical: [\n{\nhref: string\n}\n],\ncategories: [\n{\nid: string,\nlabel: string\n}\n],\ncrawled: datetime,\nid: string,\norigin: {\nhtmlUrl: string,\nstreamId: string,\ntitle: string\n},\noriginId: string,\npublished: datetime,\nsummary: {\ncontent: string,\ndirection: string\n},\ntitle: string,\ntags: [\n{\nid: string,\nlabel: string\n}\n],\nunread: boolean\n}\n]\n}\n```"
+        },
+        "Category": "WebService",
+        "Description": "Gets posts from the specified list of feedly `streams`.",
+        "Input": {
+            "Description": "None"
+        },
+        "Version": "1.0.0",
+        "Properties": {
+            "retry_interval": {
+                "description": "how long to wait before attempting to try again when a url request fails"
+            },
+            "streams": {
+                "description": "feedly streams to query"
+            },
+            "retry_limit": {
+                "description": "number of times to attempt a retry before giving up when a url request fails"
+            },
+            "lookback": {
+                "description": "how far to lookback for posts"
+            },
+            "authorization_token": {
+                "description": "developer token from feedly account"
+            }
+        },
+        "Commands": {}
+    }
 }
