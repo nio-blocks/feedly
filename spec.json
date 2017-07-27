@@ -1,5 +1,5 @@
 {
-    "nio/Feedly": {
+    "nio/FeedlyStreams": {
         "Output": {
             "Description": "The returned posts from each specified feedly `stream`. For example:\n```\n{\ncontinuation: string,\nid: string,\nitems: [\n{\nactionTimestamp: datetime,\nalternate: [\n{\nhref: string\n}\n],\nauthor: string,\ncanonical: [\n{\nhref: string\n}\n],\ncategories: [\n{\nid: string,\nlabel: string\n}\n],\ncrawled: datetime,\nid: string,\norigin: {\nhtmlUrl: string,\nstreamId: string,\ntitle: string\n},\noriginId: string,\npublished: datetime,\nsummary: {\ncontent: string,\ndirection: string\n},\ntitle: string,\ntags: [\n{\nid: string,\nlabel: string\n}\n],\nunread: boolean\n}\n]\n}\n```"
         },
