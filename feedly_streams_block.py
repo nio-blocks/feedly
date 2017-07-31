@@ -48,7 +48,8 @@ class FeedlyStreams(RESTPolling):
     user_id = StringProperty(title='User ID',
                              default='[[FEEDLY_USER_ID]]')
     queries = ListProperty(FeedlyStream, title='Streams')
-    lookback = TimeDeltaProperty(title='Lookback Period', default={'seconds':300})
+    lookback = TimeDeltaProperty(title='Lookback Period',
+                                 default={'seconds': 300})
 
     def __init__(self):
         super().__init__()
@@ -131,7 +132,7 @@ class FeedlyStreams(RESTPolling):
             return quote('user/{}/tag/{}'.format(self.user_id(),
                                                  self.stream_name()),
                          safe='')
-        else: # FeedlyStreamType.CATEGORY
+        else:  # FeedlyStreamType.CATEGORY
             return quote('user/{}/category/{}'.format(self.user_id(),
                                                       self.stream_name()),
                          safe='')
