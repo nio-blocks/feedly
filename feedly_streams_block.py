@@ -1,13 +1,11 @@
 from .http_blocks.rest.rest_block import RESTPolling
 from nio.util.discovery import discoverable
 from nio.signal.base import Signal
-from nio.properties.bool import BoolProperty
 from nio.properties.string import StringProperty
 from nio.properties.select import SelectProperty
 from nio.properties.timedelta import TimeDeltaProperty
 from nio.properties.list import ListProperty
 from nio.properties.holder import PropertyHolder
-from datetime import datetime
 from urllib.request import quote
 import time
 import calendar
@@ -48,7 +46,8 @@ class FeedlyStreams(RESTPolling):
     user_id = StringProperty(title='User ID',
                              default='[[FEEDLY_USER_ID]]')
     queries = ListProperty(FeedlyStream, title='Streams')
-    lookback = TimeDeltaProperty(title='Lookback Period', default={'seconds':300})
+    lookback = TimeDeltaProperty(title='Lookback Period',
+                                 default={'seconds': 300})
 
     def __init__(self):
         super().__init__()
@@ -91,7 +90,6 @@ class FeedlyStreams(RESTPolling):
         return headers
 
     def _process_response(self, resp):
-        signals = []
         resp = resp.json()
         self._update_newer_than_timestamp(resp)
         entries = resp.get('items', [])
@@ -131,7 +129,7 @@ class FeedlyStreams(RESTPolling):
             return quote('user/{}/tag/{}'.format(self.user_id(),
                                                  self.stream_name()),
                          safe='')
-        else: # FeedlyStreamType.CATEGORY
+        else:  # FeedlyStreamType.CATEGORY
             return quote('user/{}/category/{}'.format(self.user_id(),
                                                       self.stream_name()),
                          safe='')
