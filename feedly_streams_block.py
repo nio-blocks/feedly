@@ -1,13 +1,11 @@
 from .http_blocks.rest.rest_block import RESTPolling
 from nio.util.discovery import discoverable
 from nio.signal.base import Signal
-from nio.properties.bool import BoolProperty
 from nio.properties.string import StringProperty
 from nio.properties.select import SelectProperty
 from nio.properties.timedelta import TimeDeltaProperty
 from nio.properties.list import ListProperty
 from nio.properties.holder import PropertyHolder
-from datetime import datetime
 from urllib.request import quote
 import time
 import calendar
@@ -92,7 +90,6 @@ class FeedlyStreams(RESTPolling):
         return headers
 
     def _process_response(self, resp):
-        signals = []
         resp = resp.json()
         self._update_newer_than_timestamp(resp)
         entries = resp.get('items', [])
