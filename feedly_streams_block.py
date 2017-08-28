@@ -1,15 +1,14 @@
-from .http_blocks.rest.rest_block import RESTPolling
-from nio.util.discovery import discoverable
-from nio.signal.base import Signal
-from nio.properties.string import StringProperty
-from nio.properties.select import SelectProperty
-from nio.properties.timedelta import TimeDeltaProperty
-from nio.properties.list import ListProperty
-from nio.properties.holder import PropertyHolder
-from urllib.request import quote
 import time
 import calendar
 from enum import Enum
+from urllib.request import quote
+
+from nio.util.discovery import discoverable
+from nio.signal.base import Signal
+from nio.properties import (StringProperty, SelectProperty, TimeDeltaProperty,
+                            ListProperty, PropertyHolder, VersionProperty)
+
+from .rest_polling.rest_block import RESTPolling
 
 
 class FeedlyStreamType(Enum):
@@ -48,6 +47,7 @@ class FeedlyStreams(RESTPolling):
     queries = ListProperty(FeedlyStream, title='Streams')
     lookback = TimeDeltaProperty(title='Lookback Period',
                                  default={'seconds': 300})
+    version = VersionProperty('1.0.0')
 
     def __init__(self):
         super().__init__()

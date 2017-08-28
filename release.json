@@ -1,7 +1,7 @@
 {
   "nio/FeedlyStreams": {
     "language": "Python",
-    "version": "0.0.1",
-    "url": "git://github.com/nio-blocks/feedly.git"
+    "url": "git://github.com/nio-blocks/feedly.git",
+    "version": "1.0.0"
   }
 }
