@@ -1,10 +1,73 @@
 {
   "nio/FeedlyStreams": {
-    "version": "0.0.1",
-    "description": "",
-    "inputs": {},
-    "outputs": {},
-    "properties": {},
+    "version": "1.0.0",
+    "description": "Gets posts from the specified list of feedly `streams`.",
+    "properties": {
+      "auth_token": {
+        "title": "Authorization Token",
+        "type": "StringType",
+        "description": "developer token from feedly account",
+        "default": "[[FEEDLY_AUTHORIZATION_TOKEN]]"
+      },
+      "include_query": {
+        "title": "Include Query Field",
+        "type": "StringType",
+        "description": "whether to include queries on requests to feedly",
+        "default": null
+      },
+      "lookback": {
+        "title": "Lookback Period",
+        "type": "TimeDeltaType",
+        "description": "how far to lookback for posts",
+        "default": {
+          "seconds": 300
+        }
+      },
+      "polling_interval": {
+        "title": "Polling Interval",
+        "type": "TimeDeltaType",
+        "description": "interval to poll",
+        "default": {
+          "seconds": 20
+        }
+      },
+      "queries": {
+        "title": "Streams",
+        "type": "ListType",
+        "description": "feedly streams to query",
+        "default": []
+      },
+      "retry_interval": {
+        "title": "Retry Interval",
+        "type": "TimeDeltaType",
+        "description": "interval to retry",
+        "default": {
+          "seconds": 60
+        }
+      },
+      "retry_limit": {
+        "title": "Retry Limit",
+        "type": "IntType",
+        "description": "number of times max to retry on a request",
+        "default": 3
+      },
+      "user_id": {
+        "title": "User ID",
+        "type": "StringType",
+        "description": "feedly user id",
+        "default": "[[FEEDLY_USER_ID]]"
+      }
+    },
+    "inputs": {
+      "default": {
+        "description": "Any list of signals"
+      }
+    },
+    "outputs": {
+      "default": {
+        "description": "The returned posts from each specified feedly `stream`."
+      }
+    },
     "commands": {}
   }
 }
