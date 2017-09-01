@@ -47,7 +47,7 @@ class FeedlyStreams(RESTPolling):
     queries = ListProperty(FeedlyStream, title='Streams')
     lookback = TimeDeltaProperty(title='Lookback Period',
                                  default={'seconds': 300})
-    version = VersionProperty('1.0.0')
+    version = VersionProperty("1.0.0")
 
     def __init__(self):
         super().__init__()
