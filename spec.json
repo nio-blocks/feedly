@@ -2,6 +2,9 @@
   "nio/FeedlyStreams": {
     "version": "1.0.0",
     "description": "Gets posts from the specified list of feedly `streams`.",
+    "categories": [
+      "Web Data"
+    ],
     "properties": {
       "auth_token": {
         "title": "Authorization Token",
