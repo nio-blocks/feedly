@@ -1,6 +1,6 @@
 {
   "nio/FeedlyStreams": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Gets posts from the specified list of feedly `streams`.",
     "categories": [
       "Web Data"
